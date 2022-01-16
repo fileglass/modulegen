@@ -33,15 +33,17 @@ export async function addDeps(cwd: string, modPath: string, test: boolean, contr
     }
     const root = cwd.replace(/\\/g, "/")
     console.log("Root path:", root)
-    deps.forEach(dep => {
-        const mp = modules.filter(m => m.endsWith(dep))[0]
-        const rel = path.relative(fullModPath, mp).replace(/\\/g, "/")
-        console.log(`Adding dep: ${dep} (path: ${rel}`)
-        cnf.dependencies[dep] = {path: rel}
-    })
-    const str = toml.stringify(cnf)
-    await writeFile(cnfPath, str)
-    console.log(`Written ${cnfPath}:\n`, str)
+    if (!deps.includes("None (will overwrite the current selection)")) {
+        deps.forEach(dep => {
+            const mp = modules.filter(m => m.endsWith(dep))[0]
+            const rel = path.relative(fullModPath, mp).replace(/\\/g, "/")
+            console.log(`Adding dep: ${dep} (path: ${rel}`)
+            cnf.dependencies[dep] = {path: rel}
+        })
+        const str = toml.stringify(cnf)
+        await writeFile(cnfPath, str)
+        console.log(`Written ${cnfPath}:\n`, str)
+    }
 }
 
 export async function addModToCore(cwd: string, modPath: string, modName: string) {
