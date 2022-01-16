@@ -16,7 +16,7 @@ export function isDirCargoRoot(dir: string) {
 }
 
 function isFreeOfRustFiles(dir: string) {
-    return fs.readdirSync(dir).filter(val => val.endsWith(".rs") || val.endsWith(".ts")).length == 0
+    return fs.readdirSync(dir).filter(val => val.endsWith(".rs") || val.endsWith(".ts") || val.endsWith("html")).length == 0
 }
 
 function isDirectory(dir: string) {
