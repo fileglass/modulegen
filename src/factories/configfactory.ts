@@ -20,7 +20,7 @@ export async function addDeps(cwd: string, modPath: string, test: boolean, contr
     const cnfPath = path.join(cwd, modPath, "Cargo.toml")
     const fullModPath = path.join(cwd, modPath)
     const cnf = toml.parse((await readFile(cnfPath)).toString())
-    if (controller) {
+    if (controller || test) {
         cnf.dependencies["actix-web"] = "4.0.0-beta.10"
     }
     cnf.dependencies.log = "0.4"
