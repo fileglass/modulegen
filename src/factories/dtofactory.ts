@@ -8,7 +8,7 @@ export default async function createDtos(cwd: string, mpath: string) {
     const dtoPath = path.join(cwd, mpath, "src", "dto")
     await createDir(dtoPath)
     await Promise.all([
-        writeFile(path.join(dtoPath, "mod.rs"), `pub mod response;\npub mod request`),
+        writeFile(path.join(dtoPath, "mod.rs"), `pub mod response;\npub mod request;`),
         writeFile(path.join(dtoPath, "request.rs"), TEXT),
         writeFile(path.join(dtoPath, "response.rs"), TEXT)
     ])
