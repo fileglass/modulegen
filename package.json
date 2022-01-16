@@ -5,9 +5,9 @@
   "author": "wowjeeez",
   "license": "MIT",
   "dependencies": {
+    "@iarna/toml": "^2.2.5",
     "glob": "^7.2.0",
-    "inquirer": "^8.2.0",
-    "toml-js": "^0.0.8"
+    "inquirer": "^8.2.0"
   },
   "scripts": {
     "build": "tsc"

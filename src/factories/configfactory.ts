@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import {promisify} from "util";
 export const readFile = promisify(fs.readFile)
-const toml = require("toml-js")
+const toml = require("@iarna/toml")
 import pjson from "../../package.json"
 import {writeFile} from "../index";
 import {addHookFnToCore} from "./rust-cgen";
@@ -12,7 +12,7 @@ export async function addToMods(cwd: string, modPath: string) {
     const tomlFile = (await readFile(pth)).toString()
     const tomlP = toml.parse(tomlFile)
     tomlP.workspace.members.push(modPath)
-    const parsed = toml.dump(tomlP)
+    const parsed = toml.stringify(tomlP)
     fs.writeFileSync(pth, parsed)
 }
 
@@ -39,7 +39,7 @@ export async function addDeps(cwd: string, modPath: string, test: boolean, contr
         console.log(`Adding dep: ${dep} (path: ${rel}`)
         cnf.dependencies[dep] = {path: rel}
     })
-    const str = toml.dump(cnf)
+    const str = toml.stringify(cnf)
     await writeFile(cnfPath, str)
     console.log(`Written ${cnfPath}:\n`, str)
 }
@@ -51,7 +51,7 @@ export async function addModToCore(cwd: string, modPath: string, modName: string
     const rel = path.relative(corePath, modPath).replace(/\\/g, "/")
     const config = toml.parse((await readFile(coreConfigPath)))
     config.dependencies[modName] = {path: rel}
-    await writeFile(coreConfigPath, toml.dump(config))
+    await writeFile(coreConfigPath, toml.stringify(config))
     await addHookFnToCore(corePath, modName)
 
 }

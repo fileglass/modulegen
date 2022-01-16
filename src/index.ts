@@ -9,6 +9,7 @@ import {addDeps, addModToCore, addToMods} from "./factories/configfactory";
 import {addModDeclrs, hookFn} from "./factories/boilerplate";
 import {promisify} from "util";
 import createDtos from "./factories/dtofactory";
+import writeLayout from "./factories/layoutfactory";
 export const writeFile = promisify(fs.writeFile)
 const noop = () => {}
 const cwd = process.cwd()
@@ -147,7 +148,8 @@ async function main() {
                     writeFile(path.join(cwd, fixedPath, "src", "lib.rs"), libContent + "\n\n" + hookFn()),
                     isDto ? createDtos(cwd, fixedPath) : noop(),
                     addDeps(cwd, fixedPath, true, isCtrl, isDto, deps, modules),
-                    addModToCore(cwd, fixedPath, name)
+                    addModToCore(cwd, fixedPath, name),
+                    writeLayout(cwd, fixedPath, name, isCtrl, isSvrc, true)
                 ])
                 console.log("Written all files!")
                 const fC = `git add ${fixedPath}/* ${cwd}/Cargo.toml ${cwd}/components/core/*`
